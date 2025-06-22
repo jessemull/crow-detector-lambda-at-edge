@@ -1,0 +1,52 @@
+AWSTemplateFormatVersion: '2010-09-09'
+
+Parameters:
+  Environment:
+    Type: String
+    Default: "dev"
+    Description: "The environment for the deployment (dev or prod)"
+    AllowedValues:
+      - dev
+      - prod
+    ConstraintDescription: "Must be either 'dev' or 'prod'."
+
+Resources:
+  BlockbusterLambdaAtEdgeExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub "blockbuster-index-lambda-at-edge-role-${Environment}"
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+                - edgelambda.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: LambdaBasicExecution
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: "Allow"
+                Action:
+                  - "s3:GetObject"
+                Resource:
+                  - Fn::Sub:
+                      - "arn:aws:s3:::${BucketName}/*"
+                      - BucketName:
+                          Fn::ImportValue: !Sub "BlockbusterLambdaAtEdgeBucketName-${Environment}"
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                Resource: "arn:aws:logs:*:*:*"
+
+Outputs:
+  BlockbusterLambdaAtEdgeExecutionRoleArn:
+    Value: !GetAtt BlockbusterLambdaAtEdgeExecutionRole.Arn
+    Description: "Lambda execution role ARN"
+    Export:
+      Name: !Sub "BlockbusterLambdaAtEdgeExecutionRoleArn-${Environment}"
