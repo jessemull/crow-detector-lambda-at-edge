@@ -11,7 +11,7 @@ Parameters:
     ConstraintDescription: "Must be either 'dev' or 'prod'."
   BlockbusterLambdaAtEdgeBucketName:
     Type: String
-    Default: "blockbuster-lambda-at-edge"
+    Default: "blockbuster-index-lambda-at-edge"
     Description: "S3 bucket for storing blockbuster-lambda-at-edge lambda deployment"
 
 Resources:

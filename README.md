@@ -49,7 +49,7 @@ This repository is part of the **Blockbuster Index Project** which includes the 
 
 ## Project Overview
 
-This project implements an **AWS Lambda@Edge** function for the **Blockbuster index** to enhance the functionality of a static **Next.js** website hosted on **S3** and served via **CloudFront**.
+This project implements an **AWS Lambda@Edge** function for the **Blockbuster Index** to enhance the functionality of a static **Next.js** website hosted on **S3** and served via **CloudFront**.
 
 ### **Key Features:**
 
@@ -72,7 +72,7 @@ The **Blockbuster Index** operates in multiple environments to ensure smooth dev
 
 This project leverages modern web and cloud technologies to provide secure, scalable, and efficient authentication for CloudFront distributions.
 
-- **AWS Lambda@Edge**: Provides request routing logic at CloudFront's edge locations, enabling low-latency security enforcement.
+- **AWS Lambda@Edge**: Provides request routing logic at CloudFront's edge locations, enabling low-latency redirects.
 
 - **AWS CloudFront**: Serves as the content delivery network (CDN), caching responses and improving site performance.
 
