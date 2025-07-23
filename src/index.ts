@@ -13,6 +13,7 @@ export const handler = async (
   if (hostHeader === "blockbusterindex.com") {
     const protocol =
       headers["cloudfront-forwarded-proto"]?.[0]?.value || "https";
+
     let requestPath = request.uri || "/";
     let redirectPath: string;
 
@@ -20,14 +21,19 @@ export const handler = async (
       redirectPath = "/";
     } else {
       const [uriWithoutQuery] = requestPath.split("?");
+
       const normalizedUri = path
         .normalize(decodeURIComponent(uriWithoutQuery))
         .replace(/\/+$/, "")
         .toLowerCase();
+
       const hasExtension = /\.[a-zA-Z0-9]+$/.test(normalizedUri);
+
       redirectPath = hasExtension ? normalizedUri : `${normalizedUri}.html`;
     }
+
     const querystring = request.querystring ? `?${request.querystring}` : "";
+
     return {
       status: "301",
       statusDescription: "Moved Permanently",
