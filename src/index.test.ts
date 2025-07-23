@@ -156,32 +156,30 @@ describe("Redirect logic for canonical domain", () => {
   });
 
   it("redirects with default headers object when headers is undefined", async () => {
-    // Simulate event with no headers property at all
     const event = {
       Records: [
         {
           cf: {
             request: {
               uri: "/about",
-              // no headers property
+              // No headers property...
             },
           },
         },
       ],
     } as unknown as CloudFrontRequestEvent;
-    // Should not throw, should just normalize as usual
+
     const result = await handler(event);
     expect((result as CloudFrontRequest).uri).toBe("/about.html");
   });
 
   it("redirects with default requestPath when request.uri is undefined", async () => {
-    // Simulate blockbusterindex.com with no uri
     const event = {
       Records: [
         {
           cf: {
             request: {
-              // no uri property
+              // No uri property...
               headers: { host: [{ value: "blockbusterindex.com" }] },
             },
           },
@@ -203,7 +201,6 @@ describe("Redirect logic for canonical domain", () => {
   });
 
   it("redirects with .html only if hasExtension is false, otherwise uses normalizedUri (hasExtension true)", async () => {
-    // Simulate blockbusterindex.com with a path that already has an extension
     const event = {
       Records: [
         {
