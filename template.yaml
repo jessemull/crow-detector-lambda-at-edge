@@ -14,29 +14,29 @@ Parameters:
     Description: The S3 key for the lambda function zip file.
 
 Resources:
-  BlockbusterLambdaAtEdgeFunction:
+  CrowDetectorLambdaAtEdgeFunction:
     Type: AWS::Lambda::Function
     Properties:
-      FunctionName: !Sub "blockbuster-index-lambda-at-edge-${Environment}"
+      FunctionName: !Sub "crow-detector-lambda-at-edge-${Environment}"
       Runtime: nodejs20.x
       Role:
-        Fn::ImportValue: !Sub "BlockbusterLambdaAtEdgeExecutionRoleArn-${Environment}"
+        Fn::ImportValue: !Sub "CrowDetectorLambdaAtEdgeExecutionRoleArn-${Environment}"
       Handler: index.handler
       Code:
         S3Bucket:
-          Fn::ImportValue: !Sub "BlockbusterLambdaAtEdgeBucketName-${Environment}"
+          Fn::ImportValue: !Sub "CrowDetectorLambdaAtEdgeBucketName-${Environment}"
         S3Key: !Ref S3Key
       Timeout: 5
       MemorySize: 128
-      
+
   MyLambdaVersion:
     Type: AWS::Lambda::Version
     Properties:
-      FunctionName: !Ref BlockbusterLambdaAtEdgeFunction
+      FunctionName: !Ref CrowDetectorLambdaAtEdgeFunction
 
 Outputs:
-  BlockbusterLambdaAtEdgeFunctionArn:
+  CrowDetectorLambdaAtEdgeFunctionArn:
     Description: "ARN of the Lambda@Edge function"
     Value: !Ref MyLambdaVersion
     Export:
-      Name: !Sub "BlockbusterLambdaAtEdgeFunctionArn-${Environment}"
+      Name: !Sub "CrowDetectorLambdaAtEdgeFunctionArn-${Environment}"

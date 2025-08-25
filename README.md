@@ -1,16 +1,16 @@
-# Blockbuster Index Lambda At Edge
+# Crow Detector Lambda At Edge
 
-The **Blockbuster Index** is an AI-powered exploration of how consumer buying habits have shifted from traditional brick-and-mortar stores to digital purchases across the United States. Inspired by the nostalgic decline of physical video rental stores like Blockbuster, this project creates a unique index that scores each state based on various signals reflecting the balance of online versus in-person purchases.
+The **Crow Detector** is an AI-powered application that helps users identify and learn about different species of crows and other corvids. This project provides a comprehensive database and identification tools for bird enthusiasts, researchers, and nature lovers.
 
-The **Blockbuster Index** website visualizes these scores and trends, providing users with an engaging way to see how retail behaviors vary geographically, combining humor and data-driven insights.
+The **Crow Detector** website offers interactive features for crow identification, species information, and educational content about these intelligent birds.
 
-The **Blockbuster Index Project Lamdba@Edge** provides deep linking for the **Blockbuster Index Project** website.
+The **Crow Detector Project Lambda@Edge** provides deep linking for the **Crow Detector Project** website.
 
-This repository is part of the **Blockbuster Index Project** which includes the following repositories:
+This repository is part of the **Crow Detector Project** which includes the following repositories:
 
-- **[Blockbuster Index MCP Lambda](https://github.com/jessemull/blockbuster-index-mcp-lambda)**: The **Blockbuster Index** MCP lambda.
-- **[Blockbuster Index Project Client](https://github.com/jessemull/blockbuster-index)**: The **Blockbuster Index** NextJS client.
-- **[Blockbuster Index Lambda@Edge](https://github.com/jessemull/blockbuster-index-lambda-at-edge)**: The **Blockbuster Index** Lambda@Edge.
+- **[Crow Detector MCP Lambda](https://github.com/jessemull/crow-detector-mcp-lambda)**: The **Crow Detector** MCP lambda.
+- **[Crow Detector Project Client](https://github.com/jessemull/crow-detector-client)**: The **Crow Detector** NextJS client.
+- **[Crow Detector Lambda@Edge](https://github.com/jessemull/crow-detector-lambda-at-edge)**: The **Crow Detector** Lambda@Edge.
 
 ## Table of Contents
 
@@ -49,7 +49,7 @@ This repository is part of the **Blockbuster Index Project** which includes the 
 
 ## Project Overview
 
-This project implements an **AWS Lambda@Edge** function for the **Blockbuster Index** to enhance the functionality of a static **Next.js** website hosted on **S3** and served via **CloudFront**.
+This project implements an **AWS Lambda@Edge** function for the **Crow Detector** to enhance the functionality of a static **Next.js** website hosted on **S3** and served via **CloudFront**.
 
 ### **Key Features:**
 
@@ -66,7 +66,7 @@ This setup improves both security and usability for the website while keeping it
 
 ## Environments
 
-The **Blockbuster Index** operates in multiple environments to ensure smooth development, testing, and production workflows. Configuration files and environment variables should be set to point to the correct environment (dev/prod), depending on the stage of the application. Separate cloudfront distributions exist for each environment.
+The **Crow Detector** operates in multiple environments to ensure smooth development, testing, and production workflows. Configuration files and environment variables should be set to point to the correct environment (dev/prod), depending on the stage of the application. Separate cloudfront distributions exist for each environment.
 
 ## Tech Stack
 
@@ -88,7 +88,7 @@ This project leverages modern web and cloud technologies to provide secure, scal
 
 - **Commitizen**: Standardizes commit messages to maintain a clear and structured git history.
 
-This tech stack ensures that the **Blockbuster Index** remains secure, performant and easy to maintain while leveraging AWS infrastructure for scalability and reliability.
+This tech stack ensures that the **Crow Detector** remains secure, performant and easy to maintain while leveraging AWS infrastructure for scalability and reliability.
 
 ## Setup Instructions
 
@@ -97,13 +97,13 @@ To clone the repository and install dependencies follow these steps:
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/jessemull/blockbuster-index-lambda-at-edge.git
+   git clone https://github.com/jessemull/crow-detector-lambda-at-edge.git
    ```
 
 2. Navigate into the project directory:
 
    ```bash
-   cd blockbuster-index-lambda-at-edge
+   cd crow-detector-lambda-at-edge
    ```
 
 3. Install the root dependencies:
@@ -253,7 +253,7 @@ The deploy pipeline is triggered manually via a workflow dispatch event, allowin
 7. **CloudFormation Deployment:** Creates, executes and monitors a change set.
 8. **Backup Pruning:** Ensures only the latest five lambda package versions are stored in S3.
 
-This pipeline is defined in the `.github/workflows/deploy-lambda.yml` file.
+This pipeline is defined in the `.github/workflows/deploy.yml` file.
 
 ### Merge
 

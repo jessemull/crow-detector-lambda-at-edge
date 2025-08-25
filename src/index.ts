@@ -7,10 +7,10 @@ export const handler = async (
   const request = event.Records[0].cf.request;
   const headers = request.headers || {};
 
-  // Redirect non-canonical domain to canonical domain (blockbusterindex.com -> www.blockbusterindex.com)...
+  // Redirect non-canonical domain to canonical domain (crittercanteen.com -> www.crittercanteen.com)...
 
   const hostHeader = headers["host"]?.[0]?.value;
-  if (hostHeader === "blockbusterindex.com") {
+  if (hostHeader === "crittercanteen.com") {
     const protocol =
       headers["cloudfront-forwarded-proto"]?.[0]?.value || "https";
 
@@ -41,7 +41,7 @@ export const handler = async (
         location: [
           {
             key: "Location",
-            value: `${protocol}://www.blockbusterindex.com${redirectPath}${querystring}`,
+            value: `${protocol}://www.crittercanteen.com${redirectPath}${querystring}`,
           },
         ],
       },

@@ -1,4 +1,4 @@
-AWSTemplateFormatVersion: '2010-09-09'
+AWSTemplateFormatVersion: "2010-09-09"
 
 Parameters:
   Environment:
@@ -11,12 +11,12 @@ Parameters:
     ConstraintDescription: "Must be either 'dev' or 'prod'."
 
 Resources:
-  BlockbusterLambdaAtEdgeExecutionRole:
+  CrowDetectorLambdaAtEdgeExecutionRole:
     Type: AWS::IAM::Role
     Properties:
-      RoleName: !Sub "blockbuster-index-lambda-at-edge-role-${Environment}"
+      RoleName: !Sub "crow-detector-lambda-at-edge-role-${Environment}"
       AssumeRolePolicyDocument:
-        Version: '2012-10-17'
+        Version: "2012-10-17"
         Statement:
           - Effect: Allow
             Principal:
@@ -27,7 +27,7 @@ Resources:
       Policies:
         - PolicyName: LambdaBasicExecution
           PolicyDocument:
-            Version: '2012-10-17'
+            Version: "2012-10-17"
             Statement:
               - Effect: "Allow"
                 Action:
@@ -36,7 +36,7 @@ Resources:
                   - Fn::Sub:
                       - "arn:aws:s3:::${BucketName}/*"
                       - BucketName:
-                          Fn::ImportValue: !Sub "BlockbusterLambdaAtEdgeBucketName-${Environment}"
+                          Fn::ImportValue: !Sub "CrowDetectorLambdaAtEdgeBucketName-${Environment}"
               - Effect: Allow
                 Action:
                   - logs:CreateLogGroup
@@ -45,8 +45,8 @@ Resources:
                 Resource: "arn:aws:logs:*:*:*"
 
 Outputs:
-  BlockbusterLambdaAtEdgeExecutionRoleArn:
-    Value: !GetAtt BlockbusterLambdaAtEdgeExecutionRole.Arn
+  CrowDetectorLambdaAtEdgeExecutionRoleArn:
+    Value: !GetAtt CrowDetectorLambdaAtEdgeExecutionRole.Arn
     Description: "Lambda execution role ARN"
     Export:
-      Name: !Sub "BlockbusterLambdaAtEdgeExecutionRoleArn-${Environment}"
+      Name: !Sub "CrowDetectorLambdaAtEdgeExecutionRoleArn-${Environment}"

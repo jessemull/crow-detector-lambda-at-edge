@@ -53,7 +53,7 @@
     "*.md": "prettier --write"
   },
   "main": "dist/index.js",
-  "name": "blockbuster-index-lambda-at-edge",
+  "name": "crow-detector-lambda-at-edge",
   "scripts": {
     "bastion": "node ./scripts/connect.js",
     "build": "webpack --config webpack.config.js",
@@ -64,7 +64,7 @@
     "format:check": "prettier --check .",
     "lint": "eslint --ext .ts",
     "lint:fix": "eslint --ext .ts --fix",
-    "package": "cd dist && zip -rq blockbuster-index-lambda-at-edge.zip ./*",
+    "package": "cd dist && zip -rq crow-detector-lambda-at-edge.zip ./*",
     "prebuild": "npm run clean",
     "prepare": "husky",
     "test": "jest",

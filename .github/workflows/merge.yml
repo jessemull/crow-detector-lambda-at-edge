@@ -60,20 +60,20 @@ jobs:
           COMMIT_HASH=$(git rev-parse --short HEAD)
           VERSION=$(jq -r .version < package.json)
           TIMESTAMP=$(date -u +"%Y%m%dT%H%M%SZ")
-          ARTIFACT_NAME="blockbuster-index-lambda-at-edge-${VERSION}-${COMMIT_HASH}-${TIMESTAMP}.zip"
+          ARTIFACT_NAME="crow-detector-lambda-at-edge-${VERSION}-${COMMIT_HASH}-${TIMESTAMP}.zip"
           echo "Artifact: $ARTIFACT_NAME"
           echo "ARTIFACT_NAME=$ARTIFACT_NAME" >> $GITHUB_ENV
-          
+
       - name: Upload Lambda to S3
         run: |
-          S3_BUCKET="blockbuster-index-lambda-at-edge-dev"
-          aws s3 cp "dist/blockbuster-index-lambda-at-edge.zip" s3://${S3_BUCKET}/blockbuster-index-lambda-at-edge/${ARTIFACT_NAME} --region us-east-1
+          S3_BUCKET="crow-detector-lambda-at-edge-dev"
+          aws s3 cp "dist/crow-detector-lambda-at-edge.zip" s3://${S3_BUCKET}/crow-detector-lambda-at-edge/${ARTIFACT_NAME} --region us-east-1
 
-      - name: Check Change Set Update/Create 
+      - name: Check Change Set Update/Create
         id: change_set_type
         run: |
           ENVIRONMENT="dev"
-          STACK_NAME="blockbuster-index-lambda-at-edge-stack-dev"
+          STACK_NAME="crow-detector-lambda-at-edge-stack-dev"
           if aws cloudformation describe-stacks --stack-name "$STACK_NAME" --region us-east-1 >/dev/null 2>&1; then
             echo "Updating change set..."
             echo "change_set_type=UPDATE" >> $GITHUB_ENV
@@ -86,7 +86,7 @@ jobs:
         id: stack_status
         if: env.change_set_type == 'UPDATE'
         run: |
-          STACK_NAME="blockbuster-index-lambda-at-edge-stack-dev"
+          STACK_NAME="crow-detector-lambda-at-edge-stack-dev"
           STATUS=$(aws cloudformation describe-stacks --stack-name "$STACK_NAME" --query "Stacks[0].StackStatus" --output text 2>/dev/null || echo "NOT_FOUND")
           echo "Status: $STATUS"
           FAILED_STATES=("CREATE_FAILED" "ROLLBACK_FAILED" "UPDATE_FAILED" "DELETE_FAILED" "UPDATE_ROLLBACK_FAILED" "UPDATE_ROLLBACK_COMPLETE" "ROLLBACK_COMPLETE")
@@ -102,15 +102,15 @@ jobs:
       - name: Create CloudFormation Change Set
         run: |
           ENVIRONMENT=dev
-          STACK_NAME="blockbuster-index-lambda-at-edge-stack-dev"
+          STACK_NAME="crow-detector-lambda-at-edge-stack-dev"
           TEMPLATE_FILE="template.yaml"
-          CHANGE_SET_NAME="blockbuster-index-lambda-at-edge-change-set-dev"
+          CHANGE_SET_NAME="crow-detector-lambda-at-edge-change-set-dev"
           CHANGE_SET_TYPE=${{ env.change_set_type }}
           aws cloudformation create-change-set \
             --stack-name $STACK_NAME \
             --template-body file://$TEMPLATE_FILE \
             --parameters \
-              "ParameterKey=S3Key,ParameterValue=blockbuster-index-lambda-at-edge/${ARTIFACT_NAME}" \
+              "ParameterKey=S3Key,ParameterValue=crow-detector-lambda-at-edge/${ARTIFACT_NAME}" \
               "ParameterKey=Environment,ParameterValue=${ENVIRONMENT}" \
             --change-set-name $CHANGE_SET_NAME \
             --change-set-type $CHANGE_SET_TYPE \
@@ -124,8 +124,8 @@ jobs:
 
       - name: Check for Applied Changes
         run: |
-          STACK_NAME="blockbuster-index-lambda-at-edge-stack-dev"
-          CHANGE_SET_NAME="blockbuster-index-lambda-at-edge-change-set-dev"
+          STACK_NAME="crow-detector-lambda-at-edge-stack-dev"
+          CHANGE_SET_NAME="crow-detector-lambda-at-edge-change-set-dev"
           CHANGES=$(aws cloudformation describe-change-set \
                     --stack-name $STACK_NAME \
                     --change-set-name $CHANGE_SET_NAME \
@@ -142,8 +142,8 @@ jobs:
       - name: Execute CloudFormation Change Set
         if: env.no_changes == 'false'
         run: |
-          STACK_NAME="blockbuster-index-lambda-at-edge-stack-dev"
-          CHANGE_SET_NAME="blockbuster-index-lambda-at-edge-change-set-dev"
+          STACK_NAME="crow-detector-lambda-at-edge-stack-dev"
+          CHANGE_SET_NAME="crow-detector-lambda-at-edge-change-set-dev"
           aws cloudformation execute-change-set \
             --stack-name $STACK_NAME \
             --change-set-name $CHANGE_SET_NAME \
@@ -154,7 +154,7 @@ jobs:
         run: |
           DONE_STATUSES=("CREATE_COMPLETE" "UPDATE_COMPLETE" "ROLLBACK_COMPLETE" "UPDATE_ROLLBACK_COMPLETE" "DELETE_COMPLETE")
           FAILED_STATUSES=("CREATE_FAILED" "UPDATE_FAILED" "ROLLBACK_FAILED" "DELETE_FAILED" "UPDATE_ROLLBACK_FAILED" "ROLLBACK_IN_PROGRESS" "DELETE_IN_PROGRESS")
-          STACK_NAME="blockbuster-index-lambda-at-edge-stack-dev"
+          STACK_NAME="crow-detector-lambda-at-edge-stack-dev"
           MAX_RETRIES=30
           RETRY_COUNT=0
           while true; do
@@ -179,18 +179,17 @@ jobs:
             echo "Checking status..."
             sleep 10
           done
-      
+
       - name: Prune Backups
         run: |
-          S3_BUCKET="blockbuster-index-lambda-at-edge-dev"
-          OBJECTS=$(aws s3 ls s3://${S3_BUCKET}/blockbuster-index-lambda-at-edge/ | sort | awk '{print $4}')
+          S3_BUCKET="crow-detector-lambda-at-edge-dev"
+          OBJECTS=$(aws s3 ls s3://${S3_BUCKET}/crow-detector-lambda-at-edge/ | sort | awk '{print $4}')
           TOTAL_OBJECTS=$(echo "$OBJECTS" | wc -l)
           if [ "$TOTAL_OBJECTS" -gt 5 ]; then
             OBJECTS_TO_DELETE=$(echo "$OBJECTS" | head -n $(($TOTAL_OBJECTS - 5)))
             for OBJ in $OBJECTS_TO_DELETE; do
-              aws s3 rm s3://${S3_BUCKET}/blockbuster-index-lambda-at-edge/$OBJ
+              aws s3 rm s3://${S3_BUCKET}/crow-detector-lambda-at-edge/$OBJ
             done
           else
             echo "Less than 5 objects found, no pruning needed..."
           fi
-

@@ -15,7 +15,7 @@ const getMockEvent = (uri = "/admin", cookie?: string) =>
     ],
   }) as unknown as CloudFrontRequestEvent;
 
-describe("Blockbuster Index Lambda@Edge Handler", () => {
+describe("Crow Detector Lambda@Edge Handler", () => {
   let originalConsoleError: typeof console.error;
 
   beforeEach(() => {
@@ -79,8 +79,8 @@ describe("Redirect logic for canonical domain", () => {
     } as unknown as CloudFrontRequestEvent;
   };
 
-  it("redirects root path from blockbusterindex.com to www.blockbusterindex.com", async () => {
-    const event = getEventWithHost("/", "blockbusterindex.com");
+  it("redirects root path from crittercanteen.com to www.crittercanteen.com", async () => {
+    const event = getEventWithHost("/", "crittercanteen.com");
     const result = await handler(event);
     expect(result).toMatchObject({
       status: "301",
@@ -88,15 +88,15 @@ describe("Redirect logic for canonical domain", () => {
         location: [
           {
             key: "Location",
-            value: "https://www.blockbusterindex.com/",
+            value: "https://www.crittercanteen.com/",
           },
         ],
       },
     });
   });
 
-  it("redirects subpage from blockbusterindex.com to www.blockbusterindex.com with .html", async () => {
-    const event = getEventWithHost("/about", "blockbusterindex.com");
+  it("redirects subpage from crittercanteen.com to www.crittercanteen.com with .html", async () => {
+    const event = getEventWithHost("/about", "crittercanteen.com");
     const result = await handler(event);
     expect(result).toMatchObject({
       status: "301",
@@ -104,7 +104,7 @@ describe("Redirect logic for canonical domain", () => {
         location: [
           {
             key: "Location",
-            value: "https://www.blockbusterindex.com/about.html",
+            value: "https://www.crittercanteen.com/about.html",
           },
         ],
       },
@@ -114,7 +114,7 @@ describe("Redirect logic for canonical domain", () => {
   it("redirects with query string preserved", async () => {
     const event = getEventWithHost(
       "/about",
-      "blockbusterindex.com",
+      "crittercanteen.com",
       undefined,
       "foo=bar",
     );
@@ -125,7 +125,7 @@ describe("Redirect logic for canonical domain", () => {
         location: [
           {
             key: "Location",
-            value: "https://www.blockbusterindex.com/about.html?foo=bar",
+            value: "https://www.crittercanteen.com/about.html?foo=bar",
           },
         ],
       },
@@ -133,7 +133,7 @@ describe("Redirect logic for canonical domain", () => {
   });
 
   it("redirects with protocol from cloudfront-forwarded-proto header", async () => {
-    const event = getEventWithHost("/about", "blockbusterindex.com", "http");
+    const event = getEventWithHost("/about", "crittercanteen.com", "http");
     const result = await handler(event);
     expect(result).toMatchObject({
       status: "301",
@@ -141,15 +141,15 @@ describe("Redirect logic for canonical domain", () => {
         location: [
           {
             key: "Location",
-            value: "http://www.blockbusterindex.com/about.html",
+            value: "http://www.crittercanteen.com/about.html",
           },
         ],
       },
     });
   });
 
-  it("does not redirect for www.blockbusterindex.com", async () => {
-    const event = getEventWithHost("/about", "www.blockbusterindex.com");
+  it("does not redirect for www.crittercanteen.com", async () => {
+    const event = getEventWithHost("/about", "www.crittercanteen.com");
     const result = await handler(event);
     expect(result).not.toHaveProperty("status", "301");
     expect((result as CloudFrontRequest).uri).toBe("/about.html");
@@ -180,7 +180,7 @@ describe("Redirect logic for canonical domain", () => {
           cf: {
             request: {
               // No uri property...
-              headers: { host: [{ value: "blockbusterindex.com" }] },
+              headers: { host: [{ value: "crittercanteen.com" }] },
             },
           },
         },
@@ -193,7 +193,7 @@ describe("Redirect logic for canonical domain", () => {
         location: [
           {
             key: "Location",
-            value: "https://www.blockbusterindex.com/",
+            value: "https://www.crittercanteen.com/",
           },
         ],
       },
@@ -207,7 +207,7 @@ describe("Redirect logic for canonical domain", () => {
           cf: {
             request: {
               uri: "/robots.txt",
-              headers: { host: [{ value: "blockbusterindex.com" }] },
+              headers: { host: [{ value: "crittercanteen.com" }] },
             },
           },
         },
@@ -220,7 +220,7 @@ describe("Redirect logic for canonical domain", () => {
         location: [
           {
             key: "Location",
-            value: "https://www.blockbusterindex.com/robots.txt",
+            value: "https://www.crittercanteen.com/robots.txt",
           },
         ],
       },

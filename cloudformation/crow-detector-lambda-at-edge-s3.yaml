@@ -1,0 +1,27 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Parameters:
+  Environment:
+    Type: String
+    Default: "dev"
+    Description: "The environment for the deployment (dev or prod)"
+    AllowedValues:
+      - dev
+      - prod
+    ConstraintDescription: "Must be either 'dev' or 'prod'."
+  CrowDetectorLambdaAtEdgeBucketName:
+    Type: String
+    Default: "crow-detector-lambda-at-edge"
+    Description: "S3 bucket for storing crow-detector-lambda-at-edge lambda deployment"
+
+Resources:
+  CrowDetectorLambdaAtEdgeBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub "${CrowDetectorLambdaAtEdgeBucketName}-${Environment}"
+
+Outputs:
+  CrowDetectorLambdaAtEdgeBucketName:
+    Value: !Ref CrowDetectorLambdaAtEdgeBucket
+    Export:
+      Name: !Sub "CrowDetectorLambdaAtEdgeBucketName-${Environment}"
